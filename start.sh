@@ -8,11 +8,11 @@ echo
 # Exit script if any command returns a non-zero status
 set -e
 
-if [ ! -d "/app/knowledge" ]; then
+if [ ! -d "/app/knowledge-example" ]; then
 	echo "Cloning research repo "
 
 	cd /app/
-	if [ -z "$(ls -A knowledge)" ]; then
+	if [ -z "$(ls -A knowledge-example)" ]; then
 		echo "clone here"
 		git clone https://github.com/gthomas-slack/knowledge-example.git
 	fi
