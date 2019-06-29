@@ -1,0 +1,58 @@
+version: '3'
+
+services:
+  knowledge-app:
+    container_name: knowledge-app
+    build:
+      context: .
+    expose:
+     - 7000
+    ports:
+      - 7000:7000
+    networks:
+      - main
+    volumes:
+      - .:/app
+    environment:
+# Fill in any Knowledge repo env variables here
+      - PORT=7000
+      - SERVER_NAME=localhost
+      - RUNTIME_CONTEXT=local
+
+  knowledge-mysql:
+    container_name: knowledge-mysql
+    image: mysql:5.6.44
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    networks:
+     - main
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+    expose:
+     - "3306"
+    ports:
+     - "3306:3306"
+    environment:
+          - MYSQL_ROOT_PASSWORD=local
+          - MYSQL_DATABASE=knowledge
+          - MYSQL_USER=knowledge
+          - MYSQL_PASSWORD=local
+    cap_add:
+      - SYS_NICE  # CAP_SYS_NICE
+
+#  knowledge-postgres:
+#    image: postgres:11.1
+#    restart: always
+#    networks:
+#      - main
+#    expose:
+#     - "5432"
+#    ports:
+#      - "5432:5432"
+#    environment:
+#          - POSTGRES_USER=knowledge
+#          - POSTGRES_PASSWORD=local
+#          - POSTGRES_DB=knowledge
+
+networks:
+  main:
